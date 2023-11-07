@@ -3,31 +3,26 @@ import './Notifications.css';
 import PropTypes from 'prop-types';
 
 class NotificationItem extends React.PureComponent {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
+		const { type, value, html, markAsRead, id } = this.props;
 		return (
 			<React.Fragment>
-				{
-				this.props.type && this.props.value
-				? <li 
-				data-notification-type={this.props.type}
-				onClick={() => this.props.markAsRead(this.props.id)}>
-				{this.props.value}
-				</li>
-				: null}
-
-				{this.props.html ? (
+				{type && value ? (
+					<li onClick={() => markAsRead(id)} data-notification-type={type}>
+						{value}
+					</li>
+				) : null}
+				{html ? (
 					<li
-					data-urgent dangerouslySetInnerHTML={{ __html: this.props.html }}
+						onClick={() => markAsRead(id)}
+						data-urgent
+						dangerouslySetInnerHTML={{ __html: html }}
 					></li>
 				) : null}
 			</React.Fragment>
 		);
 	}
-};
+}
 
 NotificationItem.propTypes = {
 	type: PropTypes.string.isRequired,
@@ -35,13 +30,10 @@ NotificationItem.propTypes = {
 	__html: PropTypes.shape({
 		html: PropTypes.string,
 	}),
-	markAsRead: PropTypes.func,
-	id: PropTypes.number
 };
 
 NotificationItem.defaultProps = {
 	type: 'default',
-	id: 0,
 };
 
 export default NotificationItem;

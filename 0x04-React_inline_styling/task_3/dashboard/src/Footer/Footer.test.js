@@ -1,16 +1,25 @@
-import React from 'react';
 import { shallow } from 'enzyme';
-import { expect } from 'chai';
+import React from 'react';
 import Footer from './Footer';
-import { getFooterCopy, getFullYear } from '../utils/utils';
+import { getFullYear, getFooterCopy } from '../utils/utils';
+import { StyleSheetTestUtils } from 'aphrodite';
 
-describe('Footer renders', () => {
-    it('Footer renders without crashing', () => {
-        const footerWrapper = shallow(<Footer />);
-        expect(footerWrapper.exists());
-    })
-    it('Footer renders a paragraph', () => {
-        const footerWrapper = shallow(<Footer />);
-        expect(footerWrapper.text()).contains(`Copyright ${getFullYear()} - ${getFooterCopy(true)}`);
-    })
-})
+beforeEach(() => {
+	StyleSheetTestUtils.suppressStyleInjection();
+});
+afterEach(() => {
+	StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
+
+describe('Footer test', () => {
+	it('should render without crashing', () => {
+		const wrapper = shallow(<Footer />);
+		expect(wrapper.exists()).toEqual(true);
+	});
+	it('should render the text Copyright', () => {
+		const wrapper = shallow(<Footer />);
+		expect(wrapper.text()).toEqual(
+			`Copyright ${getFullYear()} - ${getFooterCopy(true)}`
+		);
+	});
+});
